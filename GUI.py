@@ -3,17 +3,17 @@ import tkinter as tk
 import time
 import threading
 import Garbage_classification as gc
+from picamera import PiCamera
 
 
-
-W = 480 #窗口宽度
-H = 320 #窗口高度
+W = 1000 #窗口宽度
+H = 800 #窗口高度
 result_H = 70   #显示结果的标签高度
 img_W=120 #图片宽度
 img_H=120 #图片高度
 btnBoderWidth = 0.5 #边框宽度
-btnWidth = 480 #按钮宽度
-btnHeight = 130 #按钮高度
+btnWidth = 400 #按钮宽度
+btnHeight = 200 #按钮高度
 msFont = '微软雅黑' #字体
 fontSize = 40 #字体大小
 
@@ -85,7 +85,7 @@ def init():
     global str_result
     global result
 
-    time.sleep(3)
+    time.sleep(8)
     
     str_result = tk.StringVar()
     str_result.set("闲置中")#结果标签初始化
@@ -123,7 +123,12 @@ def click():#运行程序
     global yhlj
     global str_result
     global result
-
+    camera = PiCamera()
+    camera.resolution=(480,320)
+    camera.start_preview(alpha=200)
+    camera.capture('temp.jpg',use_video_port = False)
+    camera.stop_preview()
+    camera.close()
     token=gc.token()
     data=gc.baiduace(token)
     type=gc.classify(data)#获取Garbage_classification.py文件运行的数据
